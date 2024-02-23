@@ -19,7 +19,10 @@ if __name__ == "__main__":
     print(args, "\n")
 
     print("Loading llama config...")
-    config = AutoConfig.from_pretrained(args.model_path)
+    config = AutoConfig.from_pretrained(args.model_path, trust_remote_code=True)
+    print(config)
+    config.num_hidden_layers = config.decoder_layers
+    config.intermediate_size = config.hidden_dim
 
     for i in tqdm(range(config.num_hidden_layers)):
         split = RandomSplit(args, config, args.template, i)
