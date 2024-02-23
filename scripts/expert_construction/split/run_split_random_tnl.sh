@@ -9,9 +9,9 @@ llama_size="TNL-385M"
 
 num_experts=4 #  8  16
 
-# data_path=/cpfs01/user/sunweigao/llama-moe
+# data_path=/cpfs01/user/sunweigao/TNL_MoE
 model_path=/home/sunweigao/.cache/huggingface/hub/models--OpenNLPLab--TransNormerLLM-385M/snapshots/c78a6f3d9315be099c147429b263787bf79a0050
-save_path=/cpfs01/user/sunweigao/llama-moe/moefication_results/split
+save_path=/cpfs01/user/sunweigao/TNL_MoE/moefication_results/split
 
 # gpus=0
 # cpus=8
