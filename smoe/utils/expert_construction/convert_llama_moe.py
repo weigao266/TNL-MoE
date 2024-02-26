@@ -177,7 +177,9 @@ def convert_llama_model_for_causal_lm(
 
     """initialize moe model"""
     print("Initializing llama-moe model...")
+    print(config_llama_moe)
     model_llama_moe = LlamaMoEForCausalLM(config_llama_moe)
+    print(model_llama_moe)
     model_llama_moe.to("cpu")
     model_llama_moe_state_dict = model_llama_moe.state_dict().copy()
 
