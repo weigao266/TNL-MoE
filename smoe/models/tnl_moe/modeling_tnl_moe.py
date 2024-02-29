@@ -46,20 +46,22 @@ from ..tnl.modeling_transnormer import (
 )
 from transformers.utils import ModelOutput, logging
 
-from smoe.models.llama_moe.configuration_llama_moe import LlamaMoEConfig
+from smoe.models.tnl_moe.configuration_tnl_moe import TNLMoEConfig
 from smoe.modules.moe.moe_layers import LinearGLUMoELayer, MoEMlpOutput
 from smoe.modules.norm import WeightNorm
 
-from .configuration_transnormer import TransnormerConfig
-from .norm import SimpleRMSNorm as SimpleRMSNorm_torch
-from .srmsnorm_triton import SimpleRMSNorm as SimpleRMSNorm_triton
-from .utils import (
+from ..tnl.configuration_transnormer import TransnormerConfig
+from ..tnl.norm import SimpleRMSNorm as SimpleRMSNorm_torch
+from ..tnl.srmsnorm_triton import SimpleRMSNorm as SimpleRMSNorm_triton
+from ..tnl.utils import (
     get_activation_fn,
     get_norm_fn,
     logging_info,
     print_module,
     print_params,
 )
+
+from dataclasses import dataclass
 
 logger = logging.get_logger(__name__)
 
@@ -75,7 +77,7 @@ BLOCK = 256
 
 if use_triton:
     try:
-        from .lightning_attention2 import lightning_attention
+        from ..tnl.lightning_attention2 import lightning_attention
 
         has_lightning_attention = True
     except (ImportError, ModuleNotFoundError):
@@ -147,10 +149,10 @@ class TNLMoEDecoderLayer(TransnormerDecoderLayer):
         }
 
         self.channel_mixer = LinearGLUMoELayer(
-            input_size=self.hidden_size,
+            input_size=config.hidden_size,
             hidden_size=config.intermediate_size,
-            output_size=self.hidden_size,
-            hidden_act=config.hidden_act,
+            output_size=config.hidden_size,
+            hidden_act=config.linear_act_fun,
             num_experts=config.num_experts,
             num_selects=config.num_selects,
             size_experts=(
@@ -284,7 +286,7 @@ class TNLMoEModel(TransnormerModel, TNLMoEPreTrainedModel):
         for i in range(config.decoder_layers):
             if len(self.linear_use_lrpe_list) > 0:
                 config.linear_use_lrpe = self.linear_use_lrpe_list[i]
-            self.layers.append(TNLMoEDecoderLayer(config))
+            self.layers.append(TNLMoEDecoderLayer(config, i))
 
         # Initialize weights and apply final processing
         self.post_init()

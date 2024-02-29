@@ -4,7 +4,7 @@ import os
 from smoe.utils.expert_construction.convert_tnl_moe import (
     convert_tnl_model,
     convert_tnl_model_for_causal_lm,
-    convert_tnl_model_for_sequence_classification,
+    # convert_tnl_model_for_sequence_classification,
 )
 from smoe.utils.operations.operation_string import str2bool
 
@@ -72,21 +72,21 @@ if __name__ == "__main__":
             use_softmax=args.use_softmax,
             multiply_gate_scores=args.multiply_gate_scores,
         )
-    elif args.convert_type == "TNLMoEForSequenceClassification":
-        convert_tnl_model_for_sequence_classification(
-            args.model_path,
-            args.split_file_path,
-            args.select_file_path,
-            args.save_path,
-            args.template,
-            args.num_experts,
-            args.num_selects,
-            score_scale_factor=args.score_scale_factor,
-            use_random_gate=args.use_random_gate,
-            gate_type=args.gate_type,
-            use_softmax=args.use_softmax,
-            multiply_gate_scores=args.multiply_gate_scores,
-        )
+    # elif args.convert_type == "TNLMoEForSequenceClassification":
+    #     convert_tnl_model_for_sequence_classification(
+    #         args.model_path,
+    #         args.split_file_path,
+    #         args.select_file_path,
+    #         args.save_path,
+    #         args.template,
+    #         args.num_experts,
+    #         args.num_selects,
+    #         score_scale_factor=args.score_scale_factor,
+    #         use_random_gate=args.use_random_gate,
+    #         gate_type=args.gate_type,
+    #         use_softmax=args.use_softmax,
+    #         multiply_gate_scores=args.multiply_gate_scores,
+    #     )
     else:
         raise ValueError
 

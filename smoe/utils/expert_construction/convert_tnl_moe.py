@@ -185,12 +185,12 @@ def convert_tnl_model_for_causal_lm(
     config_tnl_moe.intermediate_size = config_tnl_moe.hidden_dim
     config_tnl_moe.num_hidden_layers = config_tnl_moe.decoder_layers
     config_tnl_moe.hidden_size = config_tnl_moe.hidden_dim
+    print(config_tnl_moe)
 
     """initialize moe model"""
     print("Initializing tnl-moe model...")
-    print("Config Prepared for tnl-moe: ", config_tnl_moe)
     model_tnl_moe = TNLMoEForCausalLM(config_tnl_moe)
-    print("tnl-moe model Initialized: ", model_tnl_moe)
+    print(model_tnl_moe)
     model_tnl_moe.to("cpu")
     model_tnl_moe_state_dict = model_tnl_moe.state_dict().copy()
 

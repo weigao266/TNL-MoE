@@ -4,6 +4,11 @@ import os
 from tqdm import tqdm
 from transformers import AutoConfig
 
+from smoe.models.tnl.modeling_transnormer import (
+    TransnormerModel,
+    TransnormerForCausalLM,
+)
+
 from smoe.utils.expert_construction.expert_split import RandomSplit
 
 if __name__ == "__main__":
@@ -23,6 +28,10 @@ if __name__ == "__main__":
     print(config)
     config.num_hidden_layers = config.decoder_layers
     config.intermediate_size = config.hidden_dim
+    
+    print("Loading TransNormerLLM model...")
+    model = TransnormerForCausalLM.from_pretrained(args.model_path, trust_remote_code=True)
+    print(model)
 
     for i in tqdm(range(config.num_hidden_layers)):
         split = RandomSplit(args, config, args.template, i)

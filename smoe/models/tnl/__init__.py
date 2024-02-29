@@ -3,5 +3,5 @@ from .modeling_transnormer import (
     TransnormerDecoderLayer,
     TransnormerPreTrainedModel,
     TransnormerModel,
-    TransnormerForCausalLM
+    TransnormerForCausalLM,
 )
